@@ -1,0 +1,73 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: wordpress-service
+  namespace: staging
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+  #type: LoadBalancer
+  selector:
+    app: wordpress-ku
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-deployment
+  namespace: staging
+  labels:
+    app: wordpress-ku
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wordpress-ku
+      track: stable
+  template:
+    metadata:
+      labels:
+        app: wordpress-ku
+        track: stable
+    spec:
+      containers:
+      - name: wordpress-ku
+        image: wordpress
+        ports:
+        - containerPort: 80
+        env:
+            - name: DB_HOST
+              value: "database2.cfpzwlws2xyy.ap-northeast-2.rds.amazonaws.com"
+            - name: DB_NAME
+              value: "dbwp"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: p-secret-wp
+                  key: username
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: p-secret-wp
+                  key: password
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: wordpress-ingress
+  namespace: staging
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: sblog.rizal-is.my.id
+    http:
+      paths:
+      #- path: /
+      - backend:
+          serviceName: wordpress-service
+          servicePort: 80
