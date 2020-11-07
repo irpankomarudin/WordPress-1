@@ -39,14 +39,20 @@ spec:
         - containerPort: 80
         env:
             - name: DB_HOST
-              value: "database2.cfpzwlws2xyy.ap-northeast-2.rds.amazonaws.com"
+              valueFrom:
+                secretKeyRef:
+                  name: p-secret-wp
+                  key: host
             - name: DB_NAME
-              value: "dbwp"
+              valueFrom:
+                secretKeyRef:
+                  name: p-secret-wp
+                  key: dbname
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
                   name: p-secret-wp
-                  key: username
+                  key: user
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
