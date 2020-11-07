@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: wordpress-service
-  namespace: staging
+  #namespace: staging
 spec:
   ports:
   - port: 80
@@ -17,7 +17,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wordpress-deployment
-  namespace: staging
+  #namespace: staging
   labels:
     app: wordpress-ku
 spec:
@@ -59,12 +59,12 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: wordpress-ingress
-  namespace: staging
+  #namespace: staging
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: sblog.rizal-is.my.id
+  - host: blog.ridjal.com
     http:
       paths:
       #- path: /
