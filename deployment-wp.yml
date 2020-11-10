@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: wordpress-ku
-        image: rizaleko/wordpress
+        image: rizaleko/wordpress:tag
         ports:
         - containerPort: 80
         env:
