@@ -9,7 +9,7 @@ spec:
     protocol: TCP
   #type: LoadBalancer
   selector:
-    app: wordpress-ku
+    app: wordpress-app
 
 ---
 
@@ -19,22 +19,22 @@ metadata:
   name: wordpress-deployment
   namespace: default
   labels:
-    app: wordpress-ku
+    app: wordpress-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: wordpress-ku
+      app: wordpress-app
       track: stable
   template:
     metadata:
       labels:
-        app: wordpress-ku
+        app: wordpress-app
         track: stable
     spec:
       containers:
-      - name: wordpress-ku
-        image: irpank/wp-app:tag
+      - name: wordpress-app
+        image: irpank/wordpress-bp:tag
         ports:
         - containerPort: 80
         env:
